@@ -10,17 +10,17 @@
 
 ## Overview / Motivation
 
-JS implicit copy or reference variable depend on thair type in function call. This new syntax essentially uniformize argument call behaviour. Moreover, it add an explicit syntax to change scope variable (eg.: for globals variables used by function of if blocks)
+JS implicit clone or reference variable depend on thair type in function call. This new syntax essentially uniformize argument call behaviour. Moreover, it add an explicit syntax to change scope variable (eg.: for globals variables used by function of if blocks)
 It:
 - Prevent hidden behaviour
-- Simplify syntax for varaible copy (structuredClone)
+- Simplify syntax for variable clone (structuredClone)
 - Better variable lifetime trace (possible optimisation for implementers)
 
 ## Syntax
 
 This syntax introduce 2 new keywords
 - move (move permanently a variable from a parent scope to a new child scope)
-- copy (copy a variable from a parent scope to a new child scope)
+- clone (clone a variable from a parent scope to a new child scope)
 
 Referenced variable can't be moved to prevent access to released memory space
 
@@ -35,7 +35,7 @@ Basic usage
     const a = /* any */
     const b = /* any */
     
-    foo(move a, copy b) {
+    foo(move a, clone b) {
         //scope B
         a //can be accessed
         b //can be accessed
@@ -55,7 +55,7 @@ Basic usage
 ```
 Function declaration
 ```ts
-function foo(move arg0, copy arg1, arg2) {
+function foo(move arg0, clone arg1, arg2) {
     //
 }
 
@@ -66,47 +66,47 @@ Keyword are mandatory if declared in function arguments
 
 Respecting keywords
 ```ts
-foo(move a, copy b, c) //ok
+foo(move a, clone b, c) //ok
 ```
 
-Copy to move "cast"
+Clone to move "cast"
 ```ts
-foo(copy a, copy b, c) //ok, copy encapsulate move for call
+foo(clone a, clone b, c) //ok, clone encapsulate move for call
 ```
 
-Move to copy "cast"
+Move to clone "cast"
 ```ts
-foo(move a, move b, c) //ok, move equivalent to copy for call
+foo(move a, move b, c) //ok, move equivalent to clone for call
 ``` 
 
 To keywordless declaration "cast"
 ```ts
-foo(move a, copy b, copy c) //ok
-foo(move a, copy b, move c) //ok
+foo(move a, clone b, clone c) //ok
+foo(move a, clone b, move c) //ok
 ``` 
 
 No keyword to move "cast"
 ```ts
-foo(a, copy b, c) //throws, foo require ownership for arg0
+foo(a, clone b, c) //throws, foo require ownership for arg0
 ``` 
 
-No keyword to copy "cast"
+No keyword to clone "cast"
 ```ts
-foo(move a, b, c) //throws, foo require a copy for arg1 (ensure non mutation of b)
+foo(move a, b, c) //throws, foo require a clone for arg1 (ensure non mutation of b)
 ``` 
 
 ### Rules
 
-```copy a``` is equivalent to ```structuredClone(a)```
+```clone a``` is equivalent to ```structuredClone(a)```
 ```move a``` de-reference a to all the parents scopes
 
 ## Examples
 
-### Copy data
+### Clone data
 
 ```ts
 const source = /* any */
-const sourceCopy = copy source
+const sourceClone = clone source
 ```
 
 ### If block
@@ -126,7 +126,7 @@ value //out of scope
 ```ts
 const a = [1, 2, 3]
 
-const b = (copy a).reverse()
+const b = (clone a).reverse()
 
 //a is unchanged
 ```
