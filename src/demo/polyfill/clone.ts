@@ -1,5 +1,6 @@
 export {}
 
+type ClonablePrimitivesTypes = string | number | bigint | undefined
 const ClonablePrimitives = ['string', 'number', 'bigint', 'undefined']
 
 class CloneError extends TypeError {}
@@ -14,7 +15,7 @@ declare global {
 	}
 }
 
-Object.assign(Symbol, { cloner: Symbol('cloner')})
+Object.assign(Symbol, { cloner: Symbol('cloner') })
 
 Object.prototype[Symbol.cloner] = function () {
 	//Copy primitives and null except Symbol
@@ -56,7 +57,7 @@ Date.prototype[Symbol.cloner] = function () {
 	return new Date(this)
 }
 
-Map.prototype[Symbol.cloner] = function() {
+Map.prototype[Symbol.cloner] = function () {
 	const clone = new Map()
 	for (const [key, value] of this.entries()) {
 		clone.set(key[Symbol.cloner](), value[Symbol.cloner]())
@@ -64,10 +65,17 @@ Map.prototype[Symbol.cloner] = function() {
 	return clone
 }
 
-Set.prototype[Symbol.cloner] = function() {
+Set.prototype[Symbol.cloner] = function () {
 	const clone = new Set()
 	for (const [value] of this.entries()) {
 		clone.add(value[Symbol.cloner]())
 	}
 	return clone
 }
+
+export type Cloneable<T = unknown> =
+	| {
+			[Symbol.cloner]: () => T
+	  }
+	| Record<string, ClonablePrimitivesTypes | null>
+	| (ClonablePrimitivesTypes | null)[]
