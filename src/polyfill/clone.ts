@@ -51,3 +51,19 @@ Array.prototype[Symbol.cloner] = function () {
 Date.prototype[Symbol.cloner] = function () {
 	return new Date(this)
 }
+
+Map.prototype[Symbol.cloner] = function() {
+	const clone = new Map()
+	for (const [key, value] of this.entries()) {
+		clone.set(key[Symbol.cloner](), value[Symbol.cloner]())
+	}
+	return clone
+}
+
+Set.prototype[Symbol.cloner] = function() {
+	const clone = new Set()
+	for (const [value] of this.entries()) {
+		clone.add(value[Symbol.cloner]())
+	}
+	return clone
+}
