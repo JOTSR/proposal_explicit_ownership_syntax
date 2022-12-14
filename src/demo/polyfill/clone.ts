@@ -6,11 +6,15 @@ class CloneError extends TypeError {}
 
 declare global {
 	interface SymbolConstructor {
-		cloner: symbol
+		readonly cloner: unique symbol
+	}
+
+	interface Object {
+		[Symbol.cloner]: () => ThisType<Object>
 	}
 }
 
-Symbol.cloner = Symbol('cloner')
+Object.assign(Symbol, { cloner: Symbol('cloner')})
 
 Object.prototype[Symbol.cloner] = function () {
 	//Copy primitives and null except Symbol
@@ -23,7 +27,7 @@ Object.prototype[Symbol.cloner] = function () {
 		throw new CloneError(`${this} does not implement [Symbol.cloner]`)
 	}
 
-	const clone = {}
+	const clone: Record<string, unknown> = {}
 
 	for (const [property, descriptor] of Object.entries(
 		Object.getOwnPropertyDescriptors(this)
