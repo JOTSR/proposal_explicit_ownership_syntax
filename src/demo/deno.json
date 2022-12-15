@@ -1,0 +1,5 @@
+{
+    "tasks": {
+        "transpile:watch": "deno run --allow-read=\".\" --watch=\".\" transpile.ts"
+    }
+}
