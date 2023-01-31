@@ -41,7 +41,7 @@ const noDangerousArrow = <T>(object: Record<string, unknown>, value: Cloneable) 
 }
 
 const object = { prop: 'important' }
-console.log(object, noDangerous((object)[Symbol.cloner]() as unknown), noDangerousArrow((object)[Symbol.cloner]()))
+console.log(object, noDangerous((object)[Symbol.cloner]()), noDangerousArrow((object)[Symbol.cloner]()))
 
 const a = {b: 1}
 

@@ -1,5 +1,8 @@
 {
     "tasks": {
-        "transpile:watch": "deno run --allow-read=\".\" --watch=\".\" transpile.ts"
+        "transpile:watch": "deno run --allow-read='.' --allow-write='.' --watch='./example-in.ts' ./transpile.ts",
+        "transpile": "deno run --allow-read='.' --allow-write='.' ./transpile.ts",
+        "run": "deno run -A --unstable ./example-out.ts",
+        "demo": "deno task transpile && deno task run"
     }
 }
