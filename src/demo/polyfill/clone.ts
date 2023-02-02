@@ -37,7 +37,6 @@ Object.prototype[Symbol.cloner] = function () {
 			//Recursive clone, not suited for circular references
 			clone[property] = descriptor.value[Symbol.cloner]()
 		} catch (e) {
-			//@ts-ignore cause in Error
 			throw new CloneError(`property [${property}] is not cloneable`, {
 				cause: e,
 			})
