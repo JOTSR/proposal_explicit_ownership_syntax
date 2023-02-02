@@ -41,7 +41,7 @@ const noDangerousArrow = <T>(clone object: Record<string, unknown>, clone value:
 }
 
 const object = { prop: 'important' }
-console.log(object, noDangerous(clone object), noDangerousArrow(clone object))
+console.log(noDangerous(clone object), noDangerousArrow(clone object, clone 1), object)
 
 const a = {b: 1}
 
