@@ -60,3 +60,8 @@ console.log(e, f)
 const c1 = new CustomCloneable('John', 34)
 const c2 = clone c1
 console.log(`${c1}, ${c2}`)
+
+const circular = { ref: {} }
+circular.ref = circular
+const circular2 = clone circular
+console.log(circular, circular2)

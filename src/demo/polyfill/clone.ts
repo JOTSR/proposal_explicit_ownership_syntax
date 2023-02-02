@@ -29,14 +29,20 @@ Object.prototype[Symbol.cloner] = function () {
 	}
 
 	const clone: Record<string, unknown> = {}
+	const cache = new Map()
+	cache.set(this, clone)
 
 	for (const [property, descriptor] of Object.entries(
 		Object.getOwnPropertyDescriptors(this)
 	)) {
 		try {
-			//Recursive clone, not suited for circular references
-			const cloned = descriptor.value?.[Symbol.cloner]() ?? descriptor.value			
-			clone[property] = cloned
+			if (cache.has(descriptor.value)) {
+				clone[property] = cache.get(descriptor.value)
+			} else {
+				const cloned = descriptor.value?.[Symbol.cloner]() ?? descriptor.value			
+				cache.set(descriptor.value, cloned)
+				clone[property] = cloned
+			}
 		} catch (e) {
 			throw new CloneError(`property [${property}] is not cloneable`, {
 				cause: e,
