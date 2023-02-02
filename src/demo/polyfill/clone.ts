@@ -18,8 +18,8 @@ declare global {
 Object.assign(Symbol, { cloner: Symbol('cloner') })
 
 Object.prototype[Symbol.cloner] = function () {
-	//Copy primitives and null except Symbol
-	if (ClonablePrimitives.includes(typeof this) || this === null) {
+	//Copy primitives except Symbol
+	if (ClonablePrimitives.includes(typeof this)) {
 		return this
 	}
 

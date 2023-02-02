@@ -41,22 +41,22 @@ const noDangerousArrow = <T>(object: Record<string, unknown>, value: Cloneable) 
 }
 
 const object = { prop: 'important' }
-console.log(object, noDangerous((object)[Symbol.cloner]()), noDangerousArrow((object)[Symbol.cloner]()))
+console.log(object, noDangerous(((object)?.[Symbol.cloner]() ?? object)), noDangerousArrow(((object)?.[Symbol.cloner]() ?? object)))
 
 const a = {b: 1}
 
-const b = (a)[Symbol.cloner]()
+const b = ((a)?.[Symbol.cloner]() ?? a)
 
 const c = 1
-const d = (c)[Symbol.cloner]()
+const d = ((c)?.[Symbol.cloner]() ?? c)
 
 const e = [1, 2, '3', a, b, c, d, null, undefined]
-const f = (e)[Symbol.cloner]()
+const f = ((e)?.[Symbol.cloner]() ?? e)
 
 console.log(a, b)
 console.log(c, d)
 console.log(e, f)
 
 const c1 = new CustomCloneable('John', 34)
-const c2 = (c1)[Symbol.cloner]()
+const c2 = ((c1)?.[Symbol.cloner]() ?? c1)
 console.log(`${c1}, ${c2}`)
